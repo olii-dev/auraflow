@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Dark theme styles */
+        body {
+            background-color: #121212; /* Dark background */
+            color: #ffffff; /* Light text color */
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 10px; /* Add padding for mobile */
+            user-select: none; /* Prevent text selection */
+        }
+
+        .dashboard {
+            width: 100%; /* Full width for mobile */
+            max-width: 400px; /* Limit width for larger screens */
+            padding: 20px;
+            background-color: #1e1e1e; /* Darker background for the dashboard */
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #bb86fc; /* Light purple color for headings */
+            font-size: 28px; /* Adjusted font size for better mobile view */
+        }
+
+        #question-text {
+            font-size: 20px; /* Adjusted font size for better mobile view */
+            margin: 20px 0;
+            color: #03dac5; /* Light teal color for question text */
+        }
+
+        .option {
+            background-color: #bb86fc; /* Purple background for options */
+            color: #121212; /* Dark text color for options */
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px 0;
+            width: 100%; /* Full width for buttons */
+            transition: background-color 0.3s;
+        }
+
+        .option:hover {
+            background-color: #9e6eae; /* Darker purple on hover */
+        }
+
+        .notification {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none; /* Hidden by default */
+        }
+
+        .success {
+            background-color: #1b5e20; /* Dark green for success messages */
+            color: #ffffff;
+        }
+
+        .error {
+            background-color: #b71c1c; /* Dark red for error messages */
+            color: #ffffff;
+        }
+
+        #timer {
+            font-size: 20px;
+            color: #bb86fc; /* Purple color for timer */
+            margin: 20px 0;
+        }
+
+        #progress {
+            font-size: 16px; /* Font size for progress indicator */
+            color: #ffffff; /* White color for text */
+            margin: 10px 0;
+        }
+
+        /* Media Queries for Responsive Design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 22px; /* Smaller heading for mobile */
+            }
+
+            #question-text {
+                font-size: 16px; /* Smaller question text for mobile */
+            }
+
+            .option {
+                font-size: 14px; /* Smaller font size for options */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>Trivia Quiz</h1>
+            <div id="timer">Time Left: <span id="time">120</span> seconds</div>
+            <div id="progress">Question <span id="current-question">1</span> of 15</span></div>
+        </header>
+        <main>
+            <p id="question-text"></p>
+            <div id="options-container"></div>
+            <div id="notification" class="notification"></div>
+            <button id="hint-button" style="display: none;">Use Hint</button>
+        </main>
+    </div>
+    <script>
+        // Trivia questions and answers (General Knowledge)
+        const triviaQuestions = [
+            {
+                question: "What is the capital of France?",
+                options: ["Berlin", "Madrid", "Paris", "Lisbon"],
+                answer: "Paris",
+            },
+            {
+                question: "What is the largest planet in our solar system?",
+                options: ["Earth", "Mars", "Jupiter", "Saturn"],
+                answer: "Jupiter",
+            },
+            {
+                question: "Who wrote 'Romeo and Juliet'?",
+                options: ["Mark Twain", "Charles Dickens", "William Shakespeare", "J.K. Rowling"],
+                answer: "William Shakespeare",
+            },
+            {
+                question: "What is the chemical symbol for water?",
+                options: ["O2", "H2O", "CO2", "NaCl"],
+                answer: "H2O",
+            },
+            {
+                question: "What is the powerhouse of the cell?",
+                options: ["Nucleus", "Mitochondria", "Ribosome", "Endoplasmic Reticulum"],
+                answer: "Mitochondria",
+            },
+            {
+                question: "What is the smallest prime number?",
+                options: ["0", "1", "2", "3"],
+                answer: "2",
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Earth", "Mars", "Jupiter", "Venus"],
+                answer: "Mars",
+            },
+            {
+                question: "What is the hardest natural substance on Earth?",
+                options: ["Gold", "Iron", "Diamond", "Quartz"],
+                answer: "Diamond",
+            },
+            {
+                question: "In which year did the Titanic sink?",
+                options: ["1912", "1914", "1916", "1918"],
+                answer: "1912",
+            },
+            {
+                question: "Who painted the Mona Lisa?",
+                options: ["Vincent Van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Claude Monet"],
+                answer: "Leonardo da Vinci",
+            },
+            {
+                question: "What is the capital of Japan?",
+                options: ["Tokyo", "Seoul", "Beijing", "Bangkok"],
+                answer: "Tokyo",
+            },
+            {
+                question: "Which gas is most abundant in the Earth's atmosphere?",
+                options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
+                answer: "Nitrogen",
+            },
+            {
+                question: "What is the largest mammal in the world?",
+                options: ["Elephant", "Blue Whale", "Giraffe", "Great White Shark"],
+                answer: "Blue Whale",
+            },
+            {
+                question: "What is the main ingredient in guacamole?",
+                options: ["Tomato", "Avocado", "Onion", "Pepper"],
+                answer: "Avocado",
+            },
+            {
+                question: "What is the currency of the United Kingdom?",
+                options: ["Dollar", "Euro", "Pound", "Yen"],
+                answer: "Pound",
+            },
+            {
+                question: "What is the boiling point of water?",
+                options: ["100°C", "90°C", "80°C", "110°C"],
+                answer: "100°C",
+            },
+            {
+                question: "What is the smallest country in the world?",
+                options: ["Monaco", "Vatican City", "Nauru", "Malta"],
+                answer: "Vatican City",
+            },
+            {
+                question: "What is the capital of Australia?",
+                options: ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+                answer: "Canberra",
+            },
+            {
+                question: "What is the largest ocean on Earth?",
+                options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+                answer: "Pacific Ocean",
+            },
+            {
+                question: "What is the hardest rock?",
+                options: ["Granite", "Marble", "Diamond", "Basalt"],
+                answer: "Diamond",
+            },
+            {
+                question: "Who was the first person to walk on the moon?",
+                options: ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "John Glenn"],
+                answer: "Neil Armstrong",
+            },
+            {
+                question: "What is the main language spoken in Brazil?",
+                options: ["Spanish", "Portuguese", "English", "French"],
+                answer: "Portuguese",
+            },
+            {
+                question: "What is the largest desert in the world?",
+                options: ["Sahara", "Arabian", "Gobi", "Antarctic"],
+                answer: "Antarctic",
+            },
+            {
+                question: "What is the capital of Egypt?",
+                options: ["Cairo", "Alexandria", "Giza", "Luxor"],
+                answer: "Cairo",
+            },
+            {
+                question: "Which planet has the most moons?",
+                options: ["Earth", "Mars", "Jupiter", "Saturn"],
+                answer: "Jupiter",
+            },
+            {
+                question: "What is the freezing point of water?",
+                options: ["0°C", "32°F", "100°C", "212°F"],
+                answer: "0°C",
+            },
+            {
+                question: "What is the currency used in Japan?",
+                options: ["Yen", "Won", "Dollar", "Euro"],
+                answer: "Yen",
+            },
+            {
+                question: "What is the largest land animal?",
+                options: ["Elephant", "Hippopotamus", "Giraffe", "Rhinoceros"],
+                answer: "Elephant",
+            },
+            {
+                question: "What is the capital city of Canada?",
+                options: ["Toronto", "Ottawa", "Vancouver", "Montreal"],
+                answer: "Ottawa",
+            },
+            {
+                question: "Which famous scientist developed the theory of relativity?",
+                options: ["Isaac Newton", "Galileo Galilei", "Albert Einstein", "Stephen Hawking"],
+                answer: "Albert Einstein",
+            },
+            {
+                question: "Which organ is responsible for pumping blood throughout the body?",
+                options: ["Liver", "Lungs", "Heart", "Kidneys"],
+                answer: "Heart",
+            },
+            {
+                question: "What is the main ingredient in bread?",
+                options: ["Flour", "Sugar", "Salt", "Water"],
+                answer: "Flour",
+            },
+            {
+                question: "What is the capital of Italy?",
+                options: ["Rome", "Venice", "Florence", "Milan"],
+                answer: "Rome",
+            },
+            {
+                question: "What is the chemical formula for gold?",
+                options: ["Au", "Ag", "Pb", "Fe"],
+                answer: "Au",
+            },
+            {
+                question: "What is the longest river in the world?",
+                options: ["Amazon", "Nile", "Yangtze", "Mississippi"],
+                answer: "Nile",
+            },
+            {
+                question: "In what year did World War II end?",
+                options: ["1944", "1945", "1946", "1947"],
+                answer: "1945",
+            },
+            {
+                question: "What is the capital of Russia?",
+                options: ["Moscow", "Saint Petersburg", "Kazan", "Novosibirsk"],
+                answer: "Moscow",
+            },
+            {
+                question: "Which vitamin is produced when exposed to sunlight?",
+                options: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"],
+                answer: "Vitamin D",
+            },
+            {
+                question: "What is the hardest rock?",
+                options: ["Granite", "Marble", "Diamond", "Basalt"],
+                answer: "Diamond",
+            },
+            {
+                question: "What currency is used in Japan?",
+                options: ["Yen", "Won", "Dollar", "Euro"],
+                answer: "Yen",
+            },
+            {
+                question: "What is the main ingredient in a traditional Japanese sushi roll?",
+                options: ["Rice", "Noodles", "Fish", "Seaweed"],
+                answer: "Rice",
+            },
+            {
+                question: "What is the capital of Italy?",
+                options: ["Rome", "Venice", "Florence", "Milan"],
+                answer: "Rome",
+            },
+            {
+                question: "What is the chemical formula for table salt?",
+                options: ["NaCl", "KCl", "CaCl2", "MgCl2"],
+                answer: "NaCl",
+            },
+            {
+                question: "Who was the first person to walk on the moon?",
+                options: ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "John Glenn"],
+                answer: "Neil Armstrong",
+            },
+            {
+                question: "Which country is known as the Land of the Rising Sun?",
+                options: ["China", "Japan", "Thailand", "South Korea"],
+                answer: "Japan",
+            },
+            {
+                question: "What is the largest continent on Earth?",
+                options: ["Africa", "Asia", "North America", "Antarctica"],
+                answer: "Asia",
+            },
+            {
+                question: "What is the capital of Germany?",
+                options: ["Berlin", "Munich", "Frankfurt", "Hamburg"],
+                answer: "Berlin",
+            },
+            {
+                question: "What is the main ingredient in hummus?",
+                options: ["Chickpeas", "Lentils", "Beans", "Peas"],
+                answer: "Chickpeas",
+            },
+            {
+                question: "Which ocean is the largest?",
+                options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+                answer: "Pacific Ocean",
+            }
+        ];
+
+        // Shuffle the trivia questions and limit to 15 questions
+        function shuffleQuestions() {
+            for (let i = triviaQuestions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [triviaQuestions[i], triviaQuestions[j]] = [triviaQuestions[j], triviaQuestions[i]];
+            }
+            return triviaQuestions.slice(0, 15); // Return only the first 15 questions
+        }
+
+        let currentQuestionIndex = 0;
+        let totalCorrectAnswers = 0;
+        let incorrectAnswers = 0;
+        let timeLeft = 120; // 2 minutes in seconds
+        let timerId;
+        let hintsUsed = 0; // Track number of hints used
+        const selectedQuestions = shuffleQuestions(); // Shuffle questions before loading
+
+        // Function to load the current trivia question
+        function loadTriviaQuestion() {
+            const trivia = selectedQuestions[currentQuestionIndex];
+
+            // Display the question
+            document.getElementById('question-text').textContent = trivia.question;
+
+            // Display the options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = ''; // Clear previous options
+
+            trivia.options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option';
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option, trivia.answer);
+                optionsContainer.appendChild(button);
+            });
+
+            // Update progress
+            document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+        }
+
+        // Function to check the answer
+        function checkAnswer(selectedOption, correctAnswer) {
+            let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 10;
+
+            if (selectedOption === correctAnswer) {
+                totalCorrectAnswers++;
+                auraLevel += 1; // Aura gain for correct answer
+            } else {
+                incorrectAnswers++;
+                auraLevel = Math.max(0, auraLevel - 1); // Aura loss for incorrect answer
+            }
+
+            // Move to the next question
+            currentQuestionIndex++;
+
+            // Check if there are more questions
+            if (currentQuestionIndex < selectedQuestions.length) {
+                loadTriviaQuestion(); // Load the next question
+            } else {
+                // Quiz completed
+                finishQuiz();
+            }
+
+            localStorage.setItem('auraLevel', auraLevel); // Update aura level in local storage
+        }
+
+        // Function to finish the quiz
+        function finishQuiz() {
+            clearInterval(timerId); // Stop the timer
+
+            let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 10;
+            auraLevel += 2; // Aura gain for completing the quiz
+
+            let auraLossSummary = incorrectAnswers > 0 ? `You lost ${incorrectAnswers} aura for incorrect answers.` : '';
+            if (totalCorrectAnswers === selectedQuestions.length) {
+                auraLevel += 3; // Additional aura for all correct answers
+                showNotification(`Well done! You got all answers correct! You gained an additional 3 aura!`, 'success');
+            }
+
+            localStorage.setItem('auraLevel', auraLevel); // Update aura level in local storage
+
+            // Hide the question and options
+            document.getElementById('question-text').style.display = 'none';
+            document.getElementById('options-container').style.display = 'none';
+
+            // Show summary notification
+            showNotification(`Quiz completed! You gained 2 aura. ${auraLossSummary}`, 'success');
+
+            // Redirect to dashboard after a short delay
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 4000); // 4 seconds delay
+        }
+
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block'; // Show the notification
+
+            // Hide the notification after 5 seconds
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+
+        // Timer function
+        function startTimer() {
+            timerId = setInterval(() => {
+                timeLeft--;
+                document.getElementById('time').textContent = timeLeft;
+
+                // Check if time has run out
+                if (timeLeft <= 0) {
+                    clearInterval(timerId);
+                    let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 10;
+                    auraLevel = Math.max(0, auraLevel - 3); // Deduct aura for taking too long
+                    localStorage.setItem('auraLevel', auraLevel);
+                    showNotification(`Time's up! You lost 3 aura.`, 'error');
+
+                    // Finish the quiz
+                    finishQuiz();
+                }
+            }, 1000); // Update every second
+        }
+
+        // Load the first trivia question and start the timer when the page loads
+        loadTriviaQuestion();
+        startTimer();
+    </script>
+</body>
+</html>

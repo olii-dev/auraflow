@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Challenge</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Dark theme styles */
+        body {
+            background-color: #121212; /* Dark background */
+            color: #ffffff; /* Light text color */
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 10px; /* Add padding for mobile */
+            user-select: none; /* Prevent text selection */
+        }
+
+        .dashboard {
+            width: 100%; /* Full width for mobile */
+            max-width: 400px; /* Limit width for larger screens */
+            padding: 20px;
+            background-color: #1e1e1e; /* Darker background for the dashboard */
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #bb86fc; /* Light purple color for headings */
+            font-size: 28px; /* Adjusted font size for better mobile view */
+        }
+
+        #challenge-text {
+            font-size: 20px; /* Adjusted font size for better mobile view */
+            margin: 20px 0;
+            color: #03dac5; /* Light teal color for challenge text */
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #03dac5; /* Light teal border */
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            background-color: #2c2c2c; /* Dark input background */
+            color: #ffffff; /* Light text color for input */
+        }
+
+        input[type="text"]:focus {
+            border-color: #bb86fc; /* Change border color on focus */
+            outline: none;
+        }
+
+        button {
+            background-color: #bb86fc; /* Purple background for buttons */
+            color: #121212; /* Dark text color for buttons */
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin: 5px;
+            width: 100%; /* Full width buttons for mobile */
+        }
+
+        button:hover {
+            background-color: #9e6eae; /* Darker purple on hover */
+        }
+
+        .notification {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .success {
+            background-color: #1b5e20;
+            color: #ffffff;
+        }
+
+        .error {
+            background-color: #b71c1c;
+            color: #ffffff;
+        }
+
+        /* Media Queries for Responsive Design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 22px;
+            }
+
+            #challenge-text {
+                font-size: 16px;
+            }
+
+            input[type="text"], button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>Daily Challenge</h1>
+        </header>
+        <main>
+            <p id="challenge-text"></p>
+            <input type="text" id="motivational-phrase" placeholder="Type your phrase here..." />
+            <button id="complete-challenge">Submit Phrase</button>
+            <button onclick="window.location.href='index.html'">Back to Dashboard</button>
+            <div id="notification" class="notification"></div>
+        </main>
+    </div>
+    <script>
+        // Prevent copying and pasting in the input field
+        document.getElementById('motivational-phrase').addEventListener('paste', function(e) {
+            e.preventDefault(); // Prevent paste action
+        });
+
+        // Prevent copying text from the challenge text
+        document.getElementById('challenge-text').addEventListener('copy', function(e) {
+            e.preventDefault(); // Prevent copy action
+        });
+
+        // Array of motivational phrases
+        const phrases = [
+            "I can achieve anything I set my mind to!",
+            "Believe in yourself and all that you are.",
+            "You are stronger than you think.",
+            "Every day is a new beginning.",
+            "Your only limit is your mind.",
+            "Dream big and dare to fail.",
+            "Stay positive, work hard, make it happen.",
+            "Success is not for the lazy.",
+            "Believe you can and you're halfway there.",
+            "What lies behind us and what lies before us are tiny matters compared to what lies within us.",
+            "The future belongs to those who believe in the beauty of their dreams.",
+            "You are never too old to set another goal or to dream a new dream.",
+            "Act as if what you do makes a difference. It does.",
+            "Success usually comes to those who are too busy to be looking for it.",
+            "Don’t watch the clock; do what it does. Keep going.",
+            "Keep your face always toward the sunshine—and shadows will fall behind you.",
+            "The only way to do great work is to love what you do.",
+            "You miss 100% of the shots you don’t take.",
+            "It does not matter how slowly you go as long as you do not stop.",
+            "Your limitation—it's only your imagination.",
+            "Push yourself, because no one else is going to do it for you.",
+            "Great things never come from comfort zones.",
+            "Dream it. Wish it. Do it.",
+            "Success doesn’t just find you. You have to go out and get it.",
+            "The harder you work for something, the greater you’ll feel when you achieve it.",
+            "Dream bigger. Do bigger.",
+            "Don’t stop when you’re tired. Stop when you’re done.",
+            "Wake up with determination. Go to bed with satisfaction.",
+            "Do something today that your future self will thank you for.",
+            "Little things make big days."
+        ];
+
+        // Function to get today's challenge
+        function getTodaysChallenge() {
+            const today = new Date().toISOString().slice(0, 10);
+            const lastChallengeDate = localStorage.getItem('lastChallengeDate');
+
+            // Check if the challenge has been completed today
+            if (lastChallengeDate === today) {
+                alert("You've already completed today's challenge. Come back tomorrow!");
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Randomly select a phrase from the array
+            const randomIndex = Math.floor(Math.random() * phrases.length);
+            const selectedPhrase = phrases[randomIndex];
+
+            // Display the selected phrase
+            document.getElementById('challenge-text').textContent = `Complete the daily challenge: Type this phrase: "${selectedPhrase}"`;
+            return selectedPhrase;
+        }
+
+        const correctPhrase = getTodaysChallenge(); // Get the phrase for today
+
+        document.getElementById('complete-challenge').addEventListener('click', function() {
+            const phrase = document.getElementById('motivational-phrase').value.trim();
+            let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 10;
+
+            if (phrase.toLowerCase() === correctPhrase.toLowerCase()) {
+                let auraGain = 3; // Aura gain for completing the challenge
+                auraLevel += auraGain; // Update aura level
+                localStorage.setItem('auraLevel', auraLevel);
+                localStorage.setItem('lastChallengeDate', new Date().toISOString().slice(0, 10)); // Update last challenge date
+                showNotification(`Challenge completed! You gained ${auraGain} aura!`, 'success');
+
+                // Redirect to dashboard after a short delay
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000); // 2 seconds delay
+            } else {
+                let auraLoss = 5; // Aura loss for incorrect answer
+                auraLevel = Math.max(0, auraLevel - auraLoss); // Ensure aura does not go below 0
+                localStorage.setItem('auraLevel', auraLevel);
+                showNotification(`Incorrect phrase! You lost ${auraLoss} aura. Please try again tomorrow.`, 'error');
+
+                // Redirect to dashboard after a short delay
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000); // 2 seconds delay
+            }
+
+            document.getElementById('motivational-phrase').value = ''; // Clear input field
+        });
+
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block'; // Show the notification
+
+            // Hide the notification after 5 seconds
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
