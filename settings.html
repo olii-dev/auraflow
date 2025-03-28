@@ -28,6 +28,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             text-align: center;
+            position: relative;
         }
 
         header {
@@ -95,6 +96,24 @@
             color: #ffffff;
         }
 
+        .go-back {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #bb86fc;
+            color: #121212;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .go-back:hover {
+            background-color: #9e6eae;
+        }
+
         /* Media Queries for Responsive Design */
         @media (max-width: 600px) {
             h1 {
@@ -123,19 +142,24 @@
         <main>
             <div class="setting" id="backgroundSetting">
                 <h2>Custom Background</h2>
-                <p>Choose your custom background:</p>
                 <button onclick="applyCustomBackground('images/wallpaper-1.png')">
                     <img src="images/wallpaper-1.png" alt="Wallpaper 1" style="border-radius: 8px;">
                 </button>
                 <button onclick="applyCustomBackground('images/wallpaper-2.png')">
                     <img src="images/wallpaper-2.png" alt="Wallpaper 2" style="border-radius: 8px;">
                 </button>
+                <button onclick="applyCustomBackground('images/green-blue.png')">
+                    <img src="images/green-blue.png" alt="green-blue" style="border-radius: 8px;">
+                </button>
+                <button onclick="applyCustomBackground('images/blob.png')">
+                    <img src="images/blob.png" alt="blob" style="border-radius: 8px;">
+                </button>
                 <p style="color: #a0a0a0; font-style: italic; margin-top: 15px; text-shadow: 0 0 8px #bb86fc;">More wallpapers coming soon...</p>
             </div>
             <div id="notification" class="notification"></div>
-            <a class="go-back" href="index.html">Back to Dashboard</a>
         </main>
     </div>
+    <a class="go-back" href="index.html">Back to Dashboard</a>
     <script src="script.js"></script>
 </body>
 </html>

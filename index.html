@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auraflow Desktop</title>
+    <title>Auraflow</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Dark theme styles for the desktop */
@@ -24,7 +24,7 @@
         .desktop {
             width: 100%;
             height: 100%;
-            background-image: url('images/wallpaper-1.png'); /* Add a desktop background image */
+            background-image: url('blank'); /* Add a desktop background image */
             background-size: cover;
             position: relative;
         }
@@ -47,19 +47,23 @@
             color: #bb86fc; /* Light purple color for headings */
             font-size: 24px; /* Font size for the title */
             margin: 0;
+            text-shadow: 0 0 10px #3d2c52, 0 0 20px #644887; /* Glow effect */
         }
 
         .stats {
             margin-top: 5px;
-            color: #ffffff; /* White color for stats */
-            font-size: 16px; /* Font size for stats */
-            text-shadow: 0 0 10px #bb86fc, 0 0 20px #bb86fc; /* Glow effect */
+            color: #bb86fc; /* Light purple color for headings */
+            font-size: 18px; /* Font size for stats */
+            text-shadow: 0 0 10px #7755a0, 0 0 20px #bb86fc; /* Glow effect */
+            font-weight: bold;
         }
 
         .current-time {
             color: #bb86fc; /* Light purple color for current time */
-            font-size: 16px; /* Font size for current time */
+            font-size: 18px; /* Font size for current time */
             margin: 0 10px; /* Spacing around the time */
+            font-weight: bold;
+            padding-right: 20px;
         }
 
         .dock {
@@ -101,8 +105,20 @@
 
         /* Remove underline from links */
         .app a {
-            text-decoration: none; /* Remove underline from links */
-            color: inherit; /* Inherit color from parent */
+            text-decoration: none;
+            color: inherit; 
+        }
+
+                /* Media Queries for Responsive Design */
+                @media (max-width: 600px) {
+            .app img {
+                width: 30px;
+                height: 30px;
+            }
+
+            .app h2 {
+                font-size: 10px;
+            }
         }
     </style>
 </head>
@@ -126,16 +142,22 @@
                     <h2>Trivia</h2>
                 </a>
             </div>
-            <div class="app" id="aura-shop">
-                <a href="aura-shop.html">
-                    <img src="images/shop.png" alt="Aura Shop Icon">
-                    <h2>Shop</h2>
+            <div class="app" id="puzzle-solver">
+                <a href="puzzle-solver.html">
+                    <img src="images/scramble.png" alt="Puzzle Solver Icon"> <!-- Add your icon path -->
+                    <h2>Scramble</h2>
                 </a>
             </div>
             <div class="app" id="settings">
                 <a href="settings.html">
                     <img src="images/settings.png" alt="Settings Icon">
                     <h2>Settings</h2>
+                </a>
+            </div>
+            <div class="app" id="aura-shop">
+                <a href="aura-shop.html">
+                    <img src="images/shop.png" alt="Aura Shop Icon">
+                    <h2>Shop</h2>
                 </a>
             </div>
         </div>

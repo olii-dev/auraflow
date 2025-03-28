@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura Shop</title>
+    <title>Shop</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Dark theme styles */
@@ -28,6 +28,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             text-align: center;
+            position: relative;
         }
 
         header {
@@ -90,6 +91,36 @@
             background-color: #b71c1c; /* Dark red for error messages */
             color: #ffffff;
         }
+
+        .warning {
+            color: #ff9800;
+            background-color: #2c2c2c;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+            margin: 10px 0;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .go-back {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #bb86fc;
+            color: #121212;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .go-back:hover {
+            background-color: #9e6eae;
+        }
+
         /* Media Queries for Responsive Design */
         @media (max-width: 600px) {
             h1 {
@@ -114,6 +145,8 @@
     <div class="dashboard">
         <header>
             <h1>Aura Shop</h1>
+            <br>
+            <p>Spend your aura!</p>
         </header>
         <main>
             <div class="item" id="item1">
@@ -122,12 +155,13 @@
                 <button id="purchase-button-item1" onclick="purchaseItem('item1', 5)">Purchase</button>
             </div>
             <div id="notification" class="notification"></div>
-            <a class="go-back" href="index.html">Back to Dashboard</a>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             <div class="warning">
                 <p>WARNING!<br>Since Auraflow is in alpha, there are issues. Please <b>do not</b> purchase anything here more than once, as it will take your aura each time you make a purchase.</p>
             </div>
         </main>
     </div>
+    <a class="go-back" href="index.html">Back to Dashboard</a>
     <script src="script.js"></script>
 </body>
 </html>
