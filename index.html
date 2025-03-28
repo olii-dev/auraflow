@@ -71,19 +71,24 @@
             justify-content: center;
             align-items: center;
             background-color: rgba(30, 30, 30, 0.9); /* Dark background for the dock */
-            padding: 10px;
+            padding: 5px;
             border-top-left-radius: 15px;
             border-top-right-radius: 15px;
             position: fixed;
             bottom: 0;
             width: 100%;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            padding-top: 0px;
+            padding-bottom: 0px;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            white-space: nowrap; /* Prevent wrapping of items */
         }
 
         .app {
             margin: 0 15px;
             text-align: center;
             transition: transform 0.2s; /* Add transition for hover effect */
+            display: inline-block; /* Ensure apps are displayed inline */
         }
 
         .app:hover {
@@ -106,11 +111,11 @@
         /* Remove underline from links */
         .app a {
             text-decoration: none;
-            color: inherit; 
+            color: inherit;
         }
 
-                /* Media Queries for Responsive Design */
-                @media (max-width: 600px) {
+        /* Media Queries for Responsive Design */
+        @media (max-width: 600px) {
             .app img {
                 width: 30px;
                 height: 30px;
@@ -146,6 +151,12 @@
                 <a href="puzzle-solver.html">
                     <img src="images/scramble.png" alt="Puzzle Solver Icon"> <!-- Add your icon path -->
                     <h2>Scramble</h2>
+                </a>
+            </div>
+            <div class="app" id="gamble">
+                <a href="gamble.html">
+                    <img src="images/gamble.png" alt="Gamble Icon"> <!-- Add your icon path -->
+                    <h2>Gamble</h2>
                 </a>
             </div>
             <div class="app" id="settings">

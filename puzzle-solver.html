@@ -55,6 +55,7 @@
             font-size: 16px;
             background-color: #2c2c2c; /* Dark input background */
             color: #ffffff; /* Light text color for input */
+            text-transform: uppercase; /* Convert text to uppercase */
         }
 
         input[type="text"]:focus {
@@ -258,6 +259,11 @@
                 notification.style.display = 'none';
             }, 5000);
         }
+
+        // Ensure input text is converted to uppercase
+        document.getElementById('puzzle-answer').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
     </script>
 </body>
 </html>
