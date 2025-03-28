@@ -91,6 +91,23 @@
             margin: 10px 0;
         }
 
+        /* Hint Button Styles */
+        #hint-button {
+            background-color: #ff6f61; /* Light red background */
+            color: #ffffff; /* White text color */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        #hint-button:hover {
+            background-color: #ff4747; /* Darker red on hover */
+        }
+
         /* Media Queries for Responsive Design */
         @media (max-width: 600px) {
             h1 {
@@ -103,6 +120,11 @@
 
             .option {
                 font-size: 14px; /* Smaller font size for options */
+            }
+
+            #hint-button {
+                font-size: 14px; /* Smaller font size for hint button */
+                padding: 8px 16px; /* Adjust padding for mobile */
             }
         }
     </style>
@@ -118,7 +140,7 @@
             <p id="question-text"></p>
             <div id="options-container"></div>
             <div id="notification" class="notification"></div>
-            <button id="hint-button" style="display: none;">Use Hint</button>
+            <button id="hint-button" style="display: none;">Use Hint (<span id="hint-count">2</span> Hints Left)</button>
         </main>
     </div>
     <script>
@@ -386,6 +408,7 @@
         let timeLeft = 120; // 2 minutes in seconds
         let timerId;
         let hintsUsed = 0; // Track number of hints used
+        let hintsAvailable = 2; // Initial hints available
         const selectedQuestions = shuffleQuestions(); // Shuffle questions before loading
 
         // Function to load the current trivia question
@@ -414,13 +437,19 @@
         // Function to check the answer
         function checkAnswer(selectedOption, correctAnswer) {
             let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 10;
+            let isCorrect = selectedOption === correctAnswer;
 
-            if (selectedOption === correctAnswer) {
+            if (isCorrect) {
                 totalCorrectAnswers++;
                 auraLevel += 1; // Aura gain for correct answer
+                showNotification('Correct answer! +1 aura', 'success');
             } else {
                 incorrectAnswers++;
                 auraLevel = Math.max(0, auraLevel - 1); // Aura loss for incorrect answer
+                showNotification('Incorrect answer! -1 aura', 'error');
+                if (incorrectAnswers >= 2 && hintsAvailable > 0) {
+                    document.getElementById('hint-button').style.display = 'block'; // Show hint button
+                }
             }
 
             // Move to the next question
@@ -442,12 +471,20 @@
             clearInterval(timerId); // Stop the timer
 
             let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 10;
-            auraLevel += 2; // Aura gain for completing the quiz
+            let auraGainCompletion = 2;
+            auraLevel += auraGainCompletion; // Aura gain for completing the quiz
 
-            let auraLossSummary = incorrectAnswers > 0 ? `You lost ${incorrectAnswers} aura for incorrect answers.` : '';
+            let auraLossIncorrect = incorrectAnswers;
+            let auraGainCorrectAnswers = totalCorrectAnswers;
+            let auraAllCorrectBonus = 0;
+
+            let auraLossSummary = incorrectAnswers > 0 ? `You lost ${auraLossIncorrect} aura for ${incorrectAnswers} incorrect answers.` : '';
+            let auraGainSummary = totalCorrectAnswers > 0 ? `You gained ${auraGainCorrectAnswers} aura for ${totalCorrectAnswers} correct answers.` : '';
+
             if (totalCorrectAnswers === selectedQuestions.length) {
-                auraLevel += 3; // Additional aura for all correct answers
-                showNotification(`Well done! You got all answers correct! You gained an additional 3 aura!`, 'success');
+                auraAllCorrectBonus = 3;
+                auraLevel += auraAllCorrectBonus;
+                showNotification(`Well done! You got all answers correct! You gained an additional ${auraAllCorrectBonus} aura!`, 'success');
             }
 
             localStorage.setItem('auraLevel', auraLevel); // Update aura level in local storage
@@ -455,9 +492,11 @@
             // Hide the question and options
             document.getElementById('question-text').style.display = 'none';
             document.getElementById('options-container').style.display = 'none';
+            document.getElementById('hint-button').style.display = 'none';
 
             // Show summary notification
-            showNotification(`Quiz completed! You gained 2 aura. ${auraLossSummary}`, 'success');
+            let completionMessage = `Quiz completed! You gained ${auraGainCompletion} aura for completion. ${auraGainSummary} ${auraLossSummary} Total aura change for this quiz: ${auraGainCompletion + auraGainCorrectAnswers - auraLossIncorrect + auraAllCorrectBonus}.`;
+            showNotification(completionMessage, 'success', 8000);
 
             // Redirect to dashboard after a short delay
             setTimeout(() => {
@@ -465,16 +504,16 @@
             }, 4000); // 4 seconds delay
         }
 
-        function showNotification(message, type) {
+        function showNotification(message, type, duration = 5000) {
             const notification = document.getElementById('notification');
             notification.textContent = message;
             notification.className = `notification ${type}`;
             notification.style.display = 'block'; // Show the notification
 
-            // Hide the notification after 5 seconds
+            // Hide the notification after the specified duration
             setTimeout(() => {
                 notification.style.display = 'none';
-            }, 5000);
+            }, duration);
         }
 
         // Timer function
@@ -487,15 +526,38 @@
                 if (timeLeft <= 0) {
                     clearInterval(timerId);
                     let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 10;
-                    auraLevel = Math.max(0, auraLevel - 3); // Deduct aura for taking too long
+                    let auraLossTimeOut = 3;
+                    auraLevel = Math.max(0, auraLevel - auraLossTimeOut); // Deduct aura for taking too long
                     localStorage.setItem('auraLevel', auraLevel);
-                    showNotification(`Time's up! You lost 3 aura.`, 'error');
+                    showNotification(`Time's up! You lost ${auraLossTimeOut} aura for time out.`, 'error');
 
                     // Finish the quiz
                     finishQuiz();
                 }
             }, 1000); // Update every second
         }
+
+        // Hint button functionality
+        document.getElementById('hint-button').onclick = function() {
+            if (hintsAvailable > 0) {
+                hintsUsed++;
+                hintsAvailable--;
+                document.getElementById('hint-count').textContent = hintsAvailable;
+                showNotification('Hint used! One incorrect option has been removed.', 'notification');
+                document.getElementById('hint-button').style.display = 'none'; // Hide button after use
+
+                // Remove one incorrect option
+                const trivia = selectedQuestions[currentQuestionIndex];
+                const optionsContainer = document.getElementById('options-container');
+                const incorrectOptions = trivia.options.filter(option => option !== trivia.answer);
+                const randomIncorrectOption = incorrectOptions[Math.floor(Math.random() * incorrectOptions.length)];
+                const incorrectButton = Array.from(optionsContainer.children).find(button => button.textContent === randomIncorrectOption);
+                incorrectButton.style.display = 'none';
+            } else {
+                showNotification('No hints available!', 'error');
+                document.getElementById('hint-button').style.display = 'none'; // Ensure hidden if no hints
+            }
+        };
 
         // Load the first trivia question and start the timer when the page loads
         loadTriviaQuestion();

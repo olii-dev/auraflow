@@ -82,31 +82,31 @@
             margin-top: 20px;
             padding: 10px;
             border-radius: 5px;
-            display: none;
+            display: none; /* Hidden by default */
         }
 
         .success {
-            background-color: #1b5e20;
+            background-color: #1b5e20; /* Dark green for success messages */
             color: #ffffff;
         }
 
         .error {
-            background-color: #b71c1c;
+            background-color: #b71c1c; /* Dark red for error messages */
             color: #ffffff;
         }
 
         /* Media Queries for Responsive Design */
         @media (max-width: 600px) {
             h1 {
-                font-size: 22px;
+                font-size: 22px; /* Smaller heading for mobile */
             }
 
             #challenge-text {
-                font-size: 16px;
+                font-size: 16px; /* Smaller challenge text for mobile */
             }
 
             input[type="text"], button {
-                font-size: 14px;
+                font-size: 14px; /* Smaller font size for inputs and buttons */
             }
         }
     </style>
@@ -120,7 +120,6 @@
             <p id="challenge-text"></p>
             <input type="text" id="motivational-phrase" placeholder="Type your phrase here..." />
             <button id="complete-challenge">Submit Phrase</button>
-            <button onclick="window.location.href='index.html'">Back to Dashboard</button>
             <div id="notification" class="notification"></div>
         </main>
     </div>
@@ -173,10 +172,12 @@
         function getTodaysChallenge() {
             const today = new Date().toISOString().slice(0, 10);
             const lastChallengeDate = localStorage.getItem('lastChallengeDate');
+            const lastChallengeTime = localStorage.getItem('lastChallengeTime');
+            const twoHoursInMillis = 2 * 60 * 60 * 1000;
+            const currentTime = new Date().getTime();
 
-            // Check if the challenge has been completed today
-            if (lastChallengeDate === today) {
-                alert("You've already completed today's challenge. Come back tomorrow!");
+            if (lastChallengeDate === today && lastChallengeTime && (currentTime - lastChallengeTime < twoHoursInMillis)) {
+                alert("You've already completed today's challenge! Come back in 2 hours!");
                 window.location.href = 'index.html';
                 return;
             }
@@ -201,6 +202,7 @@
                 auraLevel += auraGain; // Update aura level
                 localStorage.setItem('auraLevel', auraLevel);
                 localStorage.setItem('lastChallengeDate', new Date().toISOString().slice(0, 10)); // Update last challenge date
+                localStorage.setItem('lastChallengeTime', new Date().getTime()); // Update last challenge time
                 showNotification(`Challenge completed! You gained ${auraGain} aura!`, 'success');
 
                 // Redirect to dashboard after a short delay
@@ -208,15 +210,14 @@
                     window.location.href = 'index.html';
                 }, 2000); // 2 seconds delay
             } else {
-                let auraLoss = 5; // Aura loss for incorrect answer
+                let auraLoss = 1; // Aura loss for incorrect answer
                 auraLevel = Math.max(0, auraLevel - auraLoss); // Ensure aura does not go below 0
                 localStorage.setItem('auraLevel', auraLevel);
-                showNotification(`Incorrect phrase! You lost ${auraLoss} aura. Please try again tomorrow.`, 'error');
+                showNotification(`Incorrect phrase! Please try again in 2 hours.`, 'error');
 
-                // Redirect to dashboard after a short delay
                 setTimeout(() => {
                     window.location.href = 'index.html';
-                }, 2000); // 2 seconds delay
+                }, 2000);
             }
 
             document.getElementById('motivational-phrase').value = ''; // Clear input field

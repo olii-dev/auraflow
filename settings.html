@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Dark theme styles */
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 10px;
+            user-select: none;
+        }
+
+        .dashboard {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #bb86fc;
+            font-size: 28px;
+        }
+
+        .setting {
+            background-color: #2c2c2c;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .setting h2 {
+            color: #03dac5;
+            font-size: 20px;
+        }
+
+        .setting p {
+            color: #ffffff;
+            font-size: 16px;
+        }
+
+        .setting button {
+            background-color: transparent;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .setting button img {
+            width: 100px;
+            height: auto;
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .setting button:hover img {
+            border-color: #bb86fc;
+            transform: scale(1.05);
+        }
+
+        .notification {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .success {
+            background-color: #1b5e20;
+            color: #ffffff;
+        }
+
+        .error {
+            background-color: #b71c1c;
+            color: #ffffff;
+        }
+
+        /* Media Queries for Responsive Design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 22px;
+            }
+
+            .setting h2 {
+                font-size: 18px;
+            }
+
+            .setting p {
+                font-size: 14px;
+            }
+
+            .setting button img {
+                width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>Settings</h1>
+        </header>
+        <main>
+            <div class="setting" id="backgroundSetting">
+                <h2>Custom Background</h2>
+                <p>Choose your custom background:</p>
+                <button onclick="applyCustomBackground('images/wallpaper-1.png')">
+                    <img src="images/wallpaper-1.png" alt="Wallpaper 1" style="border-radius: 8px;">
+                </button>
+                <button onclick="applyCustomBackground('images/wallpaper-2.png')">
+                    <img src="images/wallpaper-2.png" alt="Wallpaper 2" style="border-radius: 8px;">
+                </button>
+                <p style="color: #a0a0a0; font-style: italic; margin-top: 15px; text-shadow: 0 0 8px #bb86fc;">More wallpapers coming soon...</p>
+            </div>
+            <div id="notification" class="notification"></div>
+            <a class="go-back" href="index.html">Back to Dashboard</a>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

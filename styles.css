@@ -76,3 +76,30 @@ footer {
 #notifications {
     color: #d32f2f;
 }
+
+.warning {
+    color: #ff9800;
+    background-color: #2c2c2c;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 10px 0;
+    font-size: 20px;
+    text-align: center;
+}
+
+.go-back {
+    color: black; /* Light purple color for links */
+    text-decoration: none; /* Remove underline from links */
+    display: inline-block; /* Inline-block for better alignment */
+    margin-top: 20px;
+    padding: 10px 15px; /* Add padding for a button-like appearance */
+    background-color: #8d4adf; /* Match the dark theme */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+}
+
+.go-back:hover {
+    background-color: #a36ee4; /* Purple background on hover */
+    color: #121212; /* Dark text color on hover */
+}
