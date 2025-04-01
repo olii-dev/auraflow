@@ -1,10 +1,10 @@
 // Initialize aura level from local storage
-let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 10; // Start with 10 aura
+let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 10;
 document.getElementById('aura-level').textContent = auraLevel;
 
 // Function to determine rank based on aura level
 function determineRank(aura) {
-    if (aura < 10) return "Flickering Flame";            // Beginner
+    if (aura < 10) return "Flickering Flame";             // Beginner
     else if (aura < 20) return "Sparkling Ember";         // Novice
     else if (aura < 35) return "Radiant Seeker";          // Apprentice
     else if (aura < 50) return "Mystic Voyager";          // Intermediate
@@ -13,9 +13,18 @@ function determineRank(aura) {
     else if (aura < 100) return "Ethereal Champion";      // Expert
     else if (aura < 150) return "Stellar Protector";      // Elite
     else if (aura < 200) return "Lunar Emissary";         // Grandmaster
-    else if (aura < 250) return "Solar Sovereign";        // Supreme
-    else if (aura < 300) return "Galactic Overlord";      // Legendary
-    else return "Infinity Warden";                         // Master
+    else if (aura < 300) return "Solar Sovereign";        // Supreme
+    else if (aura < 400) return "Galactic Overlord";      // Legendary
+    else if (aura < 500) return "Infinity Warden";        // Master
+    else if (aura < 650) return "Eternal Ascendant";      // Ascendant
+    else if (aura < 800) return "Cosmic Ruler";           // Supreme Ascendant
+    else if (aura < 1000) return "Divine Sovereign";      // Celestial Master
+    else if (aura < 1500) return "Transcendent Being";    // Ultimate Master
+    else if (aura < 2000) return "Eternal Luminary";       // Omniscient
+    else if (aura < 2500) return "Infinite Wanderer";      // Omnipresent
+    else if (aura < 3000) return "Cosmic Architect";       // Omniversal
+    else if (aura < 4000) return "Celestial Paragon";      // Omnipotent
+    else return "Omnipotent Entity";                       // Beyond Master
 }
 
 // Update rank display
@@ -29,54 +38,15 @@ updateRank();
 // Function to update aura level in local storage
 function updateAura() {
     localStorage.setItem('auraLevel', auraLevel);
-    document.getElementById('aura-level').textContent = auraLevel;
-    updateRank();
+    document.getElementById('aura-level').textContent = auraLevel; // Update aura level display
+    updateRank(); // Update rank display
 }
 
-// Function to purchase an item
-function purchaseItem(itemId, cost) {
-    let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 10;
-    let purchasedItems = JSON.parse(localStorage.getItem('purchasedItems')) || [];
-
-    if (purchasedItems.includes(itemId)) {
-        showNotification(`You have already purchased ${itemId}.`, 'error');
-        return;
-    }
-
-    if (auraLevel >= cost) {
-        auraLevel -= cost;
-        localStorage.setItem('auraLevel', auraLevel);
-        document.getElementById('aura-level').textContent = auraLevel; // Update aura level display
-        updateRank(); // Update rank display
-        showNotification(`You have successfully purchased the ${itemId}!`, 'success');
-
-        // Add item to purchased items
-        purchasedItems.push(itemId);
-        localStorage.setItem('purchasedItems', JSON.stringify(purchasedItems));
-
-        // Remove the purchase button
-        document.getElementById(`purchase-button-${itemId}`).style.display = 'none';
-
-        // Apply the purchased item
-        if (itemId === 'item1') {
-            localStorage.setItem('customBackground', 'wallpaper-1.png'); // Set custom background path
-            applyCustomBackground('wallpaper-1.png'); // Apply the background immediately
-        }
-    } else {
-        showNotification(`Not enough aura to purchase ${itemId}.`, 'error');
-    }
-}
-
-// Function to apply custom background
+// Function to apply custom background for free
 function applyCustomBackground(wallpaper) {
-    const hasCustomBackground = localStorage.getItem('customBackground');
-    if (hasCustomBackground) {
-        localStorage.setItem('customBackground', wallpaper);
-        document.getElementById('desktop').style.backgroundImage = `url('${wallpaper}')`;
-        showNotification('Custom background applied!', 'success');
-    } else {
-        showNotification('You have not purchased a custom background.', 'error');
-    }
+    localStorage.setItem('customBackground', wallpaper); // Set custom background path
+    document.getElementById('desktop').style.backgroundImage = `url('${wallpaper}')`;
+    showNotification('Custom background applied!', 'success');
 }
 
 // Function to show notifications
@@ -112,11 +82,5 @@ setInterval(updateTime, 1000);
 
 // Hide purchase buttons for already purchased items
 window.onload = function() {
-    let purchasedItems = JSON.parse(localStorage.getItem('purchasedItems')) || [];
-    purchasedItems.forEach(itemId => {
-        const button = document.getElementById(`purchase-button-${itemId}`);
-        if (button) {
-            button.style.display = 'none';
-        }
-    });
+    // No items to hide since everything is free
 };

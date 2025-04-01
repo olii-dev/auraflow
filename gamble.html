@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gamble</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="images/gamble.png" type="image/x-icon">
     <style>
         /* Dark theme styles */
         body {
@@ -42,8 +43,8 @@
 
         .gamble {
             font-size: 20px;
-            margin: 20px 0;
-            color: #03dac5; /* Light teal color for gamble text */
+            margin: 1px 0;
+            color: #BB86FC; /* Light teal color for gamble text */
         }
 
         input[type="number"] {
@@ -77,6 +78,52 @@
 
         button:hover {
             background-color: #9e6eae; /* Darker purple on hover */
+        }
+
+        .quick-bet-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .quick-bet-button {
+            flex: 1 1 10%; /* Three buttons per row */
+            margin: 5px;
+            padding: 10px; /* Smaller padding for buttons */
+            background-color: #03dac5; /* Teal background for quick bet buttons */
+            color: #121212; /* Dark text color for buttons */
+            border: none;
+            border-radius: 10px; /* More rounded corners */
+            font-size: 16px; /* Slightly smaller font size */
+            font-weight: bold; /* Bold text */
+            transition: background-color 0.3s, transform 0.3s; /* Added transform transition */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+        }
+
+        .quick-bet-button:hover {
+            background-color: #02b59c; /* Darker teal on hover */
+            transform: scale(1.05); /* Slightly enlarge button on hover */
+        }
+
+        .bet-it-all-button {
+            background-color: #ffdd57; /* Bright yellow for Bet It All button */
+            color: #121212; /* Dark text color */
+            font-size: 18px; /* Slightly larger font size */
+            font-weight: bold; /* Bold text */
+            padding: 12px; /* Increased padding for emphasis */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 0 20px rgba(255, 221, 87, 0.5), 0 0 30px rgba(255, 221, 87, 0.5); /* Sparkly effect */
+            transition: transform 0.3s, box-shadow 0.3s; /* Transition for hover effects */
+            margin: 8px auto; /* Centering the button */
+            display: block; /* Make the button a block element to center it */
+            width: 70%; /* Width for the button */
+            text-align: center;
+        }
+
+        .bet-it-all-button:hover {
+            transform: scale(1.1); /* Scale up on hover */
+            box-shadow: 0 0 30px rgba(255, 221, 87, 0.7), 0 0 40px rgba(255, 221, 87, 0.7); /* Enhanced sparkly effect */
         }
 
         .notification {
@@ -127,6 +174,10 @@
             input[type="number"], button {
                 font-size: 14px; /* Smaller font size for inputs and buttons */
             }
+
+            .quick-bet-button {
+                font-size: 14px; /* Smaller font size for quick bet buttons */
+            }
         }
     </style>
 </head>
@@ -138,10 +189,17 @@
         <main>
             <p class="gamble">Enter your bet amount:</p>
             <input type="number" id="bet-amount" placeholder="Enter aura amount" min="1" />
+            <div class="quick-bet-buttons">
+                <button class="quick-bet-button" onclick="setBetAmount(5)">Bet 5</button>
+                <button class="quick-bet-button" onclick="setBetAmount(10)">Bet 10</button>
+                <button class="quick-bet-button" onclick="setBetAmount(20)">Bet 20</button>
+                <button class="quick-bet-button" onclick="setBetAmount(50)">Bet 50</button>
+            </div>
+            <button class="bet-it-all-button" onclick="betItAll()">Bet It All</button>
             <button id="gamble-button">Gamble</button>
             <div id="notification" class="notification"></div>
-            <p class="gamble">Current Streak: <span id="streak">0</span></p>
-            <p class="gamble">Best Streak: <span id="best-streak">0</span></p>
+            <p class="gamble">Streak: <span id="streak">🔥 0</span></p>
+            <p class="gamble">Best Streak: <span id="best-streak">🔥 0</span></p>
         </main>
     </div>
     <a class="go-back" href="index.html">Back to Dashboard</a>
@@ -163,7 +221,7 @@
                 return;
             }
 
-            const winProbability = 0.47; // 47% chance of winning
+            const winProbability = 0.42; // 42% chance of winning
             const isWin = Math.random() < winProbability;
 
             if (isWin) {
@@ -182,13 +240,26 @@
             if (streak > bestStreak) {
                 bestStreak = streak;
                 localStorage.setItem('bestGambleStreak', bestStreak);
-                document.getElementById('best-streak').textContent = bestStreak;
+                document.getElementById('best-streak').textContent = `🔥 ${bestStreak}`;
             }
 
             localStorage.setItem('gambleStreak', streak);
-            document.getElementById('streak').textContent = streak;
+            document.getElementById('streak').textContent = `🔥 ${streak}`;
             document.getElementById('bet-amount').value = ''; // Clear input field
         });
+
+        function setBetAmount(amount) {
+            document.getElementById('bet-amount').value = amount;
+        }
+
+        function betItAll() {
+            const auraLevel = parseInt(localStorage.getItem('auraLevel')) || 0;
+            const confirmation = confirm(`Are you sure you want to bet all ${auraLevel} aura?`);
+            if (confirmation) {
+                document.getElementById('bet-amount').value = auraLevel;
+                document.getElementById('gamble-button').click(); // Trigger gamble button click
+            }
+        }
 
         function showNotification(message, type) {
             const notification = document.getElementById('notification');
@@ -201,8 +272,8 @@
             }, 5000);
         }
 
-        document.getElementById('streak').textContent = streak;
-        document.getElementById('best-streak').textContent = bestStreak;
+        document.getElementById('streak').textContent = `🔥 ${streak}`;
+        document.getElementById('best-streak').textContent = `🔥 ${bestStreak}`;
     </script>
 </body>
 </html>

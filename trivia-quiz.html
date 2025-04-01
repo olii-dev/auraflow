@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trivia</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="images/clock.png" type="image/x-icon">
     <style>
         /* Dark theme styles */
         body {
@@ -146,7 +147,7 @@
     <script>
         // Trivia questions and answers
         const triviaQuestions = [
-            {
+        {
                 question: "What is the capital of France?",
                 options: ["Berlin", "Madrid", "Paris", "Lisbon"],
                 answer: "Paris",
@@ -390,7 +391,67 @@
                 question: "Which ocean is the largest?",
                 options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
                 answer: "Pacific Ocean",
-            }
+            },
+            {
+                question: "What is the largest species of shark?",
+                options: ["Great White Shark", "Hammerhead Shark", "Whale Shark", "Tiger Shark"],
+                answer: "Whale Shark",
+            },
+            {
+                question: "What is the primary ingredient in a traditional shepherd's pie?",
+                options: ["Beef", "Lamb", "Chicken", "Pork"],
+                answer: "Lamb",
+            },
+            {
+                question: "What is the capital of Spain?",
+                options: ["Madrid", "Barcelona", "Seville", "Valencia"],
+                answer: "Madrid",
+            },
+            {
+                question: "Which element has the atomic number 1?",
+                options: ["Oxygen", "Hydrogen", "Helium", "Carbon"],
+                answer: "Hydrogen",
+            },
+            {
+                question: "What is the largest island in the world?",
+                options: ["Greenland", "New Guinea", "Borneo", "Madagascar"],
+                answer: "Greenland",
+            },
+            {
+                question: "What is the main ingredient in pesto sauce?",
+                options: ["Basil", "Parsley", "Cilantro", "Oregano"],
+                answer: "Basil",
+            },
+            {
+                question: "What is the capital of India?",
+                options: ["New Delhi", "Mumbai", "Kolkata", "Chennai"],
+                answer: "New Delhi",
+            },
+            {
+                question: "What is the chemical symbol for silver?",
+                options: ["Ag", "Au", "Pb", "Fe"],
+                answer: "Ag",
+            },
+            {
+                question: "What is the largest organ in the human body?",
+                options: ["Heart", "Liver", "Skin", "Lungs"],
+                answer: "Skin",
+            },
+            {
+                question: "What is the main ingredient in a traditional Greek salad?",
+                options: ["Tomato", "Cucumber", "Feta cheese", "Olives"],
+                answer: "Tomatoes",
+            },
+            {
+                question: "What is the capital of Brazil?",
+                options: ["Brasilia", "Rio de Janeiro", "São Paulo", "Salvador"],
+                answer: "Brasilia",
+            },
+            {
+                question: "What is the chemical formula for carbon dioxide?",
+                options: ["CO2", "O2", "H2O", "C6H12O6"],
+                answer: "CO2",
+            },
         ];
 
         // Shuffle the trivia questions and limit to 15 questions
@@ -445,8 +506,8 @@
                 showNotification('Correct answer! +1 aura', 'success');
             } else {
                 incorrectAnswers++;
-                auraLevel = Math.max(0, auraLevel - 1); // Aura loss for incorrect answer
-                showNotification('Incorrect answer! -1 aura', 'error');
+                auraLevel = Math.max(0, auraLevel - 2); // Aura loss for incorrect answer
+                showNotification('Incorrect answer! -2 aura', 'error');
                 if (incorrectAnswers >= 2 && hintsAvailable > 0) {
                     document.getElementById('hint-button').style.display = 'block'; // Show hint button
                 }
@@ -471,8 +532,8 @@
             clearInterval(timerId); // Stop the timer
 
             let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 10;
-            let auraGainCompletion = 2;
-            auraLevel += auraGainCompletion; // Aura gain for completing the quiz
+            let auraGainCompletion = 1;
+            auraLevel += auraGainCompletion;
 
             let auraLossIncorrect = incorrectAnswers;
             let auraGainCorrectAnswers = totalCorrectAnswers;
