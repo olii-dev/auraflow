@@ -2,10 +2,27 @@
 let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 10; // Start with 10 aura
 document.getElementById('aura-level').textContent = auraLevel;
 
+// Function to determine rank based on aura level
+function determineRank(aura) {
+    if (aura < 20) return "Sparkling Ember";         // Novice
+    else if (aura < 50) return "Mystic Voyager";      // Intermediate
+    else if (aura < 100) return "Celestial Guardian";  // Advanced
+    else return "Infinity Warden";                     // Master
+}
+
+// Update rank display
+function updateRank() {
+    const rank = determineRank(auraLevel);
+    document.getElementById('current-rank').textContent = rank;
+}
+
+updateRank();
+
 // Function to update aura level in local storage
 function updateAura() {
     localStorage.setItem('auraLevel', auraLevel);
     document.getElementById('aura-level').textContent = auraLevel;
+    updateRank();
 }
 
 // Function to purchase an item
@@ -22,6 +39,7 @@ function purchaseItem(itemId, cost) {
         auraLevel -= cost;
         localStorage.setItem('auraLevel', auraLevel);
         document.getElementById('aura-level').textContent = auraLevel; // Update aura level display
+        updateRank(); // Update rank display
         showNotification(`You have successfully purchased the ${itemId}!`, 'success');
 
         // Add item to purchased items

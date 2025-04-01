@@ -27,6 +27,10 @@
             background-image: url('blank'); /* Add a desktop background image */
             background-size: cover;
             position: relative;
+            display: flex; /* Enable flexbox */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center children vertically */
+            align-items: center; /* Center children horizontally */
         }
 
         .top-bar {
@@ -78,8 +82,6 @@
             bottom: 0;
             width: 100%;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-            padding-top: 0px;
-            padding-bottom: 0px;
             overflow-x: auto; /* Enable horizontal scrolling */
             white-space: nowrap; /* Prevent wrapping of items */
         }
@@ -114,6 +116,32 @@
             color: inherit;
         }
 
+        .rank {
+    background-color: rgba(30, 30, 30, 0.8); /* Semi-transparent dark background */
+    color: #bb86fc; /* Light purple color for rank */
+    font-size: 20px; /* Font size for rank */
+    font-weight: bold;
+    padding: 20px; /* Padding for the box */
+    border-radius: 10px; /* Rounded corners */
+    text-align: center; /* Center align the rank value */
+    text-shadow: 0 0 10px #7755a0, 0 0 20px #bb86fc; /* Glow effect */
+    display: flex; /* Use flexbox for alignment */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: flex-start; /* Align items to the top */
+    position: relative; /* Allow absolute positioning of the icon */
+    width: 300px; /* Set a width for the rank box */
+    height: 220px;
+}
+ 
+.rank-icon {
+    width: 30px; /* Size of the rank icon */
+    height: 30px; /* Size of the rank icon */
+    position: absolute; /* Position the icon absolutely */
+    top: 10px; /* Position from the top */
+    left: 10px; /* Position from the left */
+}
+
         /* Media Queries for Responsive Design */
         @media (max-width: 600px) {
             .app img {
@@ -123,6 +151,10 @@
 
             .app h2 {
                 font-size: 10px;
+            }
+
+            .rank {
+                width: 80%; /* Adjust width for smaller screens */
             }
         }
     </style>
@@ -134,6 +166,15 @@
             <div class="current-time" id="current-time"></div>
             <div class="stats">Aura: <span id="aura-level">10</span></div>
         </div>
+        <div class="rank" id="current-rank-container">
+            <div class="rank-header">
+                <img src="images/rank.png" alt="Rank Icon" class="rank-icon">
+                <br><br>
+                <span>Rank:</span>
+                <br><br>
+            </div>
+            <span id="current-rank"> </span>
+        </div>        
         <div class="dock">
             <div class="app" id="daily-challenges">
                 <a href="daily-challenge.html">
@@ -149,13 +190,13 @@
             </div>
             <div class="app" id="puzzle-solver">
                 <a href="puzzle-solver.html">
-                    <img src="images/scramble.png" alt="Puzzle Solver Icon"> <!-- Add your icon path -->
+                    <img src="images/scramble.png" alt="Puzzle Solver Icon">
                     <h2>Scramble</h2>
                 </a>
             </div>
             <div class="app" id="gamble">
                 <a href="gamble.html">
-                    <img src="images/gamble.png" alt="Gamble Icon"> <!-- Add your icon path -->
+                    <img src="images/gamble.png" alt="Gamble Icon">
                     <h2>Gamble</h2>
                 </a>
             </div>
