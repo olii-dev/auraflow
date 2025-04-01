@@ -4,10 +4,18 @@ document.getElementById('aura-level').textContent = auraLevel;
 
 // Function to determine rank based on aura level
 function determineRank(aura) {
-    if (aura < 20) return "Sparkling Ember";         // Novice
-    else if (aura < 50) return "Mystic Voyager";      // Intermediate
-    else if (aura < 100) return "Celestial Guardian";  // Advanced
-    else return "Infinity Warden";                     // Master
+    if (aura < 10) return "Flickering Flame";            // Beginner
+    else if (aura < 20) return "Sparkling Ember";         // Novice
+    else if (aura < 35) return "Radiant Seeker";          // Apprentice
+    else if (aura < 50) return "Mystic Voyager";          // Intermediate
+    else if (aura < 70) return "Astral Sentinel";         // Skilled
+    else if (aura < 85) return "Celestial Guardian";      // Advanced
+    else if (aura < 100) return "Ethereal Champion";      // Expert
+    else if (aura < 150) return "Stellar Protector";      // Elite
+    else if (aura < 200) return "Lunar Emissary";         // Grandmaster
+    else if (aura < 250) return "Solar Sovereign";        // Supreme
+    else if (aura < 300) return "Galactic Overlord";      // Legendary
+    else return "Infinity Warden";                         // Master
 }
 
 // Update rank display
