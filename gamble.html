@@ -208,8 +208,13 @@
         let bestStreak = parseInt(localStorage.getItem('bestGambleStreak')) || 0;
 
         document.getElementById('gamble-button').addEventListener('click', function() {
+            let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 0; // Get the current aura level
+            if (auraLevel <= 0) {
+                showNotification('You cannot gamble with 0 or less aura.', 'error');
+                return; // Prevent gambling if aura level is 0 or less
+            }
+
             const betAmount = parseInt(document.getElementById('bet-amount').value);
-            let auraLevel = parseInt(localStorage.getItem('auraLevel')) || 10;
 
             if (isNaN(betAmount) || betAmount <= 0) {
                 showNotification('Please enter a valid bet amount.', 'error');

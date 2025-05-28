@@ -1,2 +1,2 @@
 # Auraflow
-the aura game
+the aura game.
